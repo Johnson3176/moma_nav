@@ -1,0 +1,25 @@
+# 规划频率与超时
+planner_frequency: 1.0
+planner_patience: 5.0
+
+GlobalPlanner:
+
+  # 搜索与路径生成
+  allow_unknown: true
+  default_tolerance: 0.2
+  visualize_potential: false
+  inf_is_valid: true
+  use_dijkstra: true
+  use_quadratic: true
+  use_grid_path: false
+  old_navfn_behavior: false
+
+  # 代价值
+  lethal_cost: 253
+  neutral_cost: 50
+  cost_factor: 3.0
+
+  # 可视化与路径朝向
+  publish_potential: true
+  orientation_mode: 0
+  orientation_window_size: 1

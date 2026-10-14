@@ -1,0 +1,35 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true" args="/map:=prior_map /odom:=Odometry">
+    <!-- 可选速度平滑器：启用时必须同时取消下面 remap 和文件末尾 include 的注释。
+         速度链路：move_base → /raw_cmd_vel → velocity_smoother_ema → /cmd_vel。
+         仅启用 include 会与 move_base 同时向 /cmd_vel 发布；仅启用 remap 则无平滑速度输出。 -->
+    <!-- <remap from="/cmd_vel" to="/raw_cmd_vel" /> -->
+    <param name="recovery_behavior_enabled" value="false" />
+
+    <!-- 全局与局部规划器。 -->
+    <!-- <param name="base_global_planner" value="hybrid_astar_planner/HybridAStarPlanner" /> -->
+    <!-- <param name="use_hybrid_astar" value="true" /> -->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <!-- 切换 DWA 时，同时替换局部规划器及下方 TEB 参数加载项。 -->
+    <!-- <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /> -->
+
+    <!-- 规划器参数。 -->
+    <rosparam file="$(find moma_nav)/param/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find moma_nav)/param/base_teb_local_planner_params.yaml" command="load" />
+    <!-- <rosparam file="$(find moma_nav)/param/base_dwa_local_planner_params.yaml" command="load" /> -->
+
+    <!-- 通用、局部与全局代价地图参数。 -->
+    <rosparam file="$(find moma_nav)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find moma_nav)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find moma_nav)/param/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find moma_nav)/param/global_costmap_params.yaml" command="load" />
+    <!-- <rosparam file="$(find moma_nav)/param/costmap_converter_params.yaml" command="load" /> -->
+  </node>
+
+  <!-- 将 map 系下的 body 位姿投影到二维平面。 -->
+  <node pkg="moma_nav" type="project_body_to_map_2d" name="project_body_to_map_2d" />
+
+  <!-- 可选速度平滑器：必须与 move_base 内的 /cmd_vel → /raw_cmd_vel 重映射同时启用。 -->
+  <!-- <include file="$(find velocity_smoother_ema)/launch/velocity_smoother_ema.launch" /> -->
+</launch>

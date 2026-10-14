@@ -1,0 +1,136 @@
+# 控制器配置
+controller_frequency: 20
+controller_patience:  15.0
+recovery_behavior_enabled: False
+
+TebLocalPlannerROS:
+
+  # 坐标系与输出
+  map_frame: odom
+  odom_topic: Odometry
+
+  # 目标容差
+  xy_goal_tolerance: 0.05
+  yaw_goal_tolerance: 0.05
+  free_goal_vel: False  # 禁用后要求到达目标时停止
+
+  # 速度与加速度限制
+  max_vel_x: 1.2
+  max_vel_x_backwards: 0.4
+  max_vel_theta: 1.0
+  acc_lim_x: 1.0
+  acc_lim_theta: 1.0
+  transform_tolerance: 0.2
+
+  # 底盘运动模型
+  min_turning_radius: 0.0  # 零值允许原地转向
+  wheelbase: 0.0
+  cmd_angle_instead_rotvel: False  # 使用角速度指令
+
+  # 机器人轮廓
+  footprint_model:
+    type: "polygon"
+    vertices: [[0.5, 0.4], [-0.5, 0.4], [-0.5, -0.4], [0.5, -0.4]]
+
+  # 轨迹优化范围与采样
+  teb_autosize: True
+  dt_ref: 0.3  # 期望轨迹时间分辨率，单位为秒
+  dt_hysteresis: 0.03  # 时间分辨率调整的滞回阈值
+  global_plan_overwrite_orientation: True
+  allow_init_with_backwards_motion: False
+  complete_global_plan: False
+  max_global_plan_lookahead_dist: 3.0
+  global_plan_prune_distance: 1.0
+  force_reinit_new_goal_dist: 1.0
+  force_reinit_new_goal_angular: 0.78
+  feasibility_check_no_poses: 5
+  feasibility_check_lookahead_distance: -1.0
+  exact_arc_length: False
+  publish_feedback: False
+  control_look_ahead_poses: 2
+  prevent_look_ahead_poses_near_goal: 5
+  min_samples: 8
+  max_samples: 15
+
+  # 途经点
+  global_plan_viapoint_sep: -1
+  via_points_ordered: False
+
+  # 障碍物处理
+  min_obstacle_dist: 0.1
+  inflation_dist: 0.10
+  include_costmap_obstacles: True  # 是否纳入局部代价地图障碍物
+  include_dynamic_obstacles: True
+  dynamic_obstacle_inflation_dist: 0.10
+  costmap_obstacles_behind_robot_dist: 0.3
+  obstacle_poses_affected: 5
+  legacy_obstacle_association: False
+  obstacle_association_force_inclusion_factor: 1.5
+  obstacle_association_cutoff_factor: 5.0
+  obstacle_proximity_ratio_max_vel: 0.80
+  obstacle_proximity_lower_bound: 0.35
+  obstacle_proximity_upper_bound: 0.75
+
+  # 代价地图障碍物转换
+  costmap_converter_plugin: "costmap_converter::CostmapToLinesDBSRANSAC"
+  costmap_converter/CostmapToLinesDBSRANSAC:
+    cluster_max_distance: 0.3
+    cluster_min_pts: 3
+    ransac_inlier_distance: 0.1
+    ransac_min_inliers: 8
+    ransac_no_iterations: 100
+    ransac_remainig_outliers: 3
+    ransac_convert_outlier_pts: True
+    ransac_filter_remaining_outlier_pts: False
+    convex_hull_min_pt_separation: 0.15
+
+  # 优化迭代与权重
+  no_inner_iterations: 3
+  no_outer_iterations: 2
+  optimization_activate: True
+  optimization_verbose: False
+  penalty_epsilon: 0.1
+  weight_max_vel_x: 2
+  weight_max_vel_theta: 1
+  weight_acc_lim_x: 5
+  weight_acc_lim_theta: 4
+  weight_kinematics_nh: 1000
+  weight_kinematics_forward_drive: 8
+  weight_kinematics_turning_radius: 1
+  weight_optimaltime: 0.7
+  weight_obstacle: 20
+  weight_inflation: 0.8
+  weight_dynamic_obstacle: 20
+  weight_dynamic_obstacle_inflation: 0.8
+  weight_velocity_obstacle_ratio: 3
+  alternative_time_cost: False
+  selection_alternative_time_cost: False
+
+  # 同伦路径规划
+  enable_homotopy_class_planning: True
+  enable_multithreading: True
+  max_number_classes: 2
+  max_number_plans_in_current_class: 4
+  selection_cost_hysteresis: 1.5
+  selection_prefer_initial_plan: 1.0
+  selection_obst_cost_scale: 5.0
+  selection_viapoint_cost_scale: 1.0
+  selection_dropping_probability: 0.0
+  switching_blocking_period: 3.5
+  roadmap_graph_no_samples: 10
+  roadmap_graph_area_width: 5
+  h_signature_prescaler: 0.5
+  h_signature_threshold: 0.1
+  obstacle_keypoint_offset: 0.60
+  obstacle_heading_threshold: 0.45
+  visualize_hc_graph: True
+  simple_exploration: True
+
+  # 恢复策略
+  shrink_horizon_backup: True
+  shrink_horizon_min_duration: 10
+  oscillation_recovery: True
+  oscillation_v_eps: 0.1
+  oscillation_omega_eps: 0.1
+  oscillation_recovery_min_duration: 10
+  oscillation_filter_duration: 10

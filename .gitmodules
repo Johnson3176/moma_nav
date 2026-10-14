@@ -1,0 +1,9 @@
+[submodule "teb_local_planner"]
+	path = teb_local_planner
+	url = https://github.com/Johnson3176/teb_local_planner.git
+[submodule "hybrid_astar_planner"]
+	path = hybrid_astar_planner
+	url = https://github.com/Johnson3176/hybrid_astar_planner.git
+[submodule "velocity_smoother_ema"]
+	path = velocity_smoother_ema
+	url = https://github.com/Johnson3176/velocity_smoother_ema.git

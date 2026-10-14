@@ -1,0 +1,19 @@
+global_costmap:
+
+  # 坐标系
+  global_frame: map
+  robot_base_frame: base_link
+
+  # 更新频率与变换容差
+  update_frequency: 1.0
+  publish_frequency: 1.0
+  transform_tolerance: 2
+
+  # 静态地图
+  resolution: 0.1
+  static_map: true
+
+  # 障碍物膨胀
+  inflation_layer:
+    inflation_radius: 0.75
+    cost_scaling_factor: 1.0

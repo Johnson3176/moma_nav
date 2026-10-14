@@ -1,0 +1,14 @@
+# 本地仓库分析记录。
+/analyse.md
+
+# ROS 构建产物。
+/build/
+/devel/
+/install/
+/logs/
+
+# 编辑器与 Python 缓存。
+/.vscode/
+/.idea/
+__pycache__/
+*.pyc
